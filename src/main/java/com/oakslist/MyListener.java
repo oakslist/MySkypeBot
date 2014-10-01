@@ -9,7 +9,10 @@ import com.skype.ChatMessage;
 import com.skype.ChatMessageListener;
 import com.skype.SkypeException;
 
-import java.net.SocketPermission;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URL;
 
 /**
  * Created by Siarhei_Varachai on 10/1/2014.
@@ -22,9 +25,18 @@ public class MyListener implements ChatMessageListener {
         ChatterBotSession skypeSession = skypeBot.createSession();
 
         try {
-            myMessage = skypeSession.think(myMessage);
             final Chat chatterup = myChat;
-            chatterup.send(myMessage);
+            if (myMessage.toString().equals("getips")) {
+                String currentIp = getIp();
+                System.out.println(currentIp);
+                chatterup.send(currentIp);
+                System.out.println("1st loc");
+            } else {
+                myMessage = skypeSession.think(myMessage);
+                System.out.println("2nd loc");
+                chatterup.send(myMessage);
+                System.out.println("3rd loc");
+            }
         } catch (final SkypeException ex) {
             ex.printStackTrace();
         }
@@ -54,6 +66,29 @@ public class MyListener implements ChatMessageListener {
         } catch (final Exception ex) {
             ex.printStackTrace();
         }
+    }
+
+    public String getIp() throws Exception {
+        URL whatismyip = new URL("http://checkip.amazonaws.com");
+        BufferedReader in = null;
+        String ip = "No Ip";
+        try {
+            in = new BufferedReader(new InputStreamReader(
+                    whatismyip.openStream()));
+            ip = in.readLine();
+            return ip;
+        } catch (Exception ex) {
+
+        } finally {
+            if (in != null) {
+                try {
+                    in.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return ip;
     }
 }
 
