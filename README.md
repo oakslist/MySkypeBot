@@ -1,0 +1,4 @@
+MySkypeBot
+==========
+
+MySkypeBot
