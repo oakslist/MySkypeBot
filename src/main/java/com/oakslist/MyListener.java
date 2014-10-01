@@ -27,7 +27,6 @@ public class MyListener implements ChatMessageListener {
         try {
             final Chat chatterup = myChat;
             if (myMessage.toString().equals("getips")) {
-                
                 String currentIp = getIp();
                 System.out.println(currentIp);
                 chatterup.send(currentIp);
