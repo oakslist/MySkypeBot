@@ -14,6 +14,10 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 
+//TODO check why I send double messages
+// and set PC name to message
+
+
 /**
  * Created by Siarhei_Varachai on 10/1/2014.
  */
@@ -26,7 +30,6 @@ public class MyListener implements ChatMessageListener {
 
         try {
             final Chat chatterup = myChat;
-            
             if (myMessage.toString().equals("getip")) {
                 String currentIp = getIp();
                 System.out.println(currentIp);
@@ -60,7 +63,8 @@ public class MyListener implements ChatMessageListener {
     @Override
     public void chatMessageSent(ChatMessage sentMessage) throws SkypeException {
         try {
-            myListener(sentMessage.getContent(), sentMessage.getChat());
+            //next line for show the bot conversation with the same bot =)
+//            myListener(sentMessage.getContent(), sentMessage.getChat());
             System.out.println("\n" + sentMessage.getSenderDisplayName() + " : " + sentMessage.getContent());
         } catch (final SkypeException ex) {
             ex.printStackTrace();
