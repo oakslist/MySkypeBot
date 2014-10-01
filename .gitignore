@@ -1,0 +1,12 @@
+*.class
+*.log
+
+# Package Files #
+# *.jar #
+*.war
+*.ear
+
+#IDEA
+*.iml
+.idea/
+.target/
