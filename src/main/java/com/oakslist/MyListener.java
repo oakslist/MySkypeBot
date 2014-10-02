@@ -34,12 +34,9 @@ public class MyListener implements ChatMessageListener {
                 String currentIp = getIp();
                 System.out.println(currentIp);
                 chatterup.send(currentIp);
-                System.out.println("1st loc");
             } else {
                 myMessage = skypeSession.think(myMessage);
-                System.out.println("2nd loc");
                 chatterup.send(myMessage);
-                System.out.println("3rd loc");
             }
         } catch (final SkypeException ex) {
             ex.printStackTrace();
