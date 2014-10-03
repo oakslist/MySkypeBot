@@ -5,6 +5,7 @@ import com.google.code.chatterbotapi.ChatterBotFactory;
 import com.google.code.chatterbotapi.ChatterBotSession;
 import com.google.code.chatterbotapi.ChatterBotType;
 import com.oakslist.load.LoadIp;
+import com.oakslist.load.LoadPropertiesFile;
 import com.oakslist.load.LoadQueriesMap;
 import com.skype.Chat;
 import com.skype.ChatMessage;
@@ -30,6 +31,7 @@ public class MyListener implements ChatMessageListener {
     private static final String passRequest = "Hi! Send me your password, please...";
 
     private Map queriesHashMap;
+    private StringBuilder lastMessage = new StringBuilder();
 
     public MyListener() {
         LoadQueriesMap loadQueriesMap = new LoadQueriesMap();
@@ -46,20 +48,19 @@ public class MyListener implements ChatMessageListener {
         try {
             final Chat chatterup = myChat;
 
-//            for (String key : this.queriesHashMap.keySet()) {
-//
-//            }
-            System.out.println(this.queriesHashMap.keySet());
-            chatterup.send(passRequest);
-            System.out.println("\t\t\t " + myChat.getAllChatMessages());
-            if (myMessage.toString().equals("getip")) {
-                chatterup.send(passRequest);
-//                LoadIp myIp = new LoadIp();
-//                String currentIp = myIp.getIp();
-//                System.out.println(currentIp);
-//                chatterup.send(currentIp);
-                System.out.println(myChat);
+            if (myMessage.toString().equals("getip")
+                    || myMessage.toString().equals("Hi there.  Have we met somewhere?  I think I recognize your face.")) {
+                if (getLastMessage().toString().equals(LoadPropertiesFile.pass)) {
+                    setLastMessage("");
+                    LoadIp myIp = new LoadIp();
+                    String currentIp = myIp.getIp();
+                    chatterup.send(currentIp);
+                } else {
+                    setLastMessage(myMessage.toString());
+                    chatterup.send(passRequest);
+                }
             } else {
+                setLastMessage("");
                 myMessage = skypeSession.think(myMessage);
                 chatterup.send(myMessage);
             }
@@ -71,7 +72,12 @@ public class MyListener implements ChatMessageListener {
     @Override
     public void chatMessageReceived(ChatMessage recMessage) throws SkypeException {
         try {
-            myListener(recMessage.getContent(), recMessage.getChat());
+
+            // check people which need to be answered
+            if (recMessage.getSenderDisplayName().equals("aaa")//) {
+                    || recMessage.getSenderDisplayName().equals("Aliaksandr Varachai")) {
+                myListener(recMessage.getContent(), recMessage.getChat());
+            }
 
             // for console display of skype interaction
             System.out.println("\n" + recMessage.getSenderDisplayName() + " : " + recMessage.getContent());
@@ -93,6 +99,15 @@ public class MyListener implements ChatMessageListener {
         } catch (final Exception ex) {
             ex.printStackTrace();
         }
+    }
+
+    public StringBuilder getLastMessage() {
+        return this.lastMessage;
+    }
+
+    public void setLastMessage(String message) {
+        this.lastMessage.setLength(0);
+        this.lastMessage.append(message);
     }
 
 }

@@ -25,6 +25,4 @@ public class SkypeMain {
         new LoadPropertiesFile();
     }
 
-
-
 }

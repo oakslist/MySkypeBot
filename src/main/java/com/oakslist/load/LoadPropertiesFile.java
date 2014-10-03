@@ -11,12 +11,12 @@ import java.util.Properties;
  */
 public class LoadPropertiesFile {
 
-    private static final String PROP_FILE_NAME = "pass.properties";
+    private static final String PROP_FILE_NAME = "config.properties";
     private static final String PROP_PASS_NAME = "pass";
 
     private static boolean isLoaded = false;
     private static Properties prop;
-    private static String pass = "";
+    public static String pass = "";
 
     public LoadPropertiesFile() {
         if (!isLoaded) {
@@ -58,5 +58,4 @@ public class LoadPropertiesFile {
             }
         }
     }
-
 }
