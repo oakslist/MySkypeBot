@@ -4,18 +4,21 @@ import com.google.code.chatterbotapi.ChatterBot;
 import com.google.code.chatterbotapi.ChatterBotFactory;
 import com.google.code.chatterbotapi.ChatterBotSession;
 import com.google.code.chatterbotapi.ChatterBotType;
-import com.oakslist.load.LoadIp;
-import com.oakslist.load.LoadPropertiesFile;
-import com.oakslist.load.LoadQueriesMap;
+import com.oakslist.tools.cmd.SkypeCommandPromt;
+import com.oakslist.tools.load.LoadIp;
+import com.oakslist.tools.load.LoadPropertiesFile;
+import com.oakslist.tools.load.LoadQueriesMap;
 import com.skype.Chat;
 import com.skype.ChatMessage;
 import com.skype.ChatMessageListener;
 import com.skype.SkypeException;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.Map;
 
 //TODO check why I send double messages
+//TODO check how work with 2 or more clients and save their own command
 // and set PC name to message
 
 
@@ -56,7 +59,7 @@ public class MyListener implements ChatMessageListener {
     private void myListener(String myMessage, Chat myChat) throws Exception {
         // 2 sec wait
         Thread.sleep(2000);
-
+        //TODO clean debugger msg
         System.out.println("--------------------------------\n point 0-0");
 
         try {
@@ -70,6 +73,7 @@ public class MyListener implements ChatMessageListener {
             if (parts[0].equals("getip") || parts[0].equals("cmd")) {
                 this.isWaitPassword = true;
                 setLastMessage(parts[0]);
+                // TODO fix ArrayIndexOutOfBoundsException
                 if (parts[0].equals("cmd") || parts[1] != null || parts[1] != "") {
                     String fullCommand = "";
                     for(int i = 1; i < parts.length - 1; i++) {
@@ -93,9 +97,12 @@ public class MyListener implements ChatMessageListener {
                                 break;
                             case "cmd":
                                 // create cmd command
-                                chatterup.send("you in cmd line!!!\n");
+
                                 try {
-                                    Runtime.getRuntime().exec("cmd.exe /c start " + getCommandMessage());
+//                                    Runtime.getRuntime().exec("cmd.exe /c start " + getCommandMessage());
+                                    String outputStr = SkypeCommandPromt.run(getCommandMessage(), true);
+                                    System.out.println("test message: [" + outputStr + "] [" + getCommandMessage() + "]");
+                                    chatterup.send("you in cmd line!!!\n" + outputStr);
                                 } catch (IOException ex) {
                                     ex.printStackTrace();
                                 }
@@ -133,6 +140,7 @@ public class MyListener implements ChatMessageListener {
         try {
             // check people which need to be answered
 //            || recMessage.getSenderDisplayName().toString().equals("oaksbot")
+            //TODO replace names to setting file
             if (recMessage.getSenderDisplayName().toString().equals("Siarhei Varachai")
                     || recMessage.getSenderDisplayName().toString().equals("Aliaksandr Varachai")) {
                 myListener(recMessage.getContent(), recMessage.getChat());

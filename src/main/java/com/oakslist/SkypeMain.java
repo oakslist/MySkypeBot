@@ -1,12 +1,9 @@
 package com.oakslist;
 
 import com.oakslist.listener.MyListener;
-import com.oakslist.load.LoadPropertiesFile;
+import com.oakslist.tools.load.LoadPropertiesFile;
 import com.skype.Skype;
 import com.skype.SkypeException;
-
-import java.io.*;
-import java.util.Properties;
 
 /**
  * Created by Siarhei_Varachai on 10/1/2014.
@@ -24,7 +21,6 @@ public class SkypeMain {
     public SkypeMain() {
         new LoadPropertiesFile();
     }
-
 
 
 }

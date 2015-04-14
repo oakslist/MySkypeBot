@@ -1,4 +1,4 @@
-package com.oakslist.load;
+package com.oakslist.tools.load;
 
 import java.util.HashMap;
 import java.util.Map;
